@@ -1,4 +1,5 @@
 const Admin = require("../models/adminModel");
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const addAdmin = async (req, res) => {
@@ -42,16 +43,23 @@ const login = async (req, res) => {
 
     //Find if Admin Exist in Database
     const admin = await Admin.findOne({ name });
+
     if (!admin)
       return res.json({ msg: "Incorrect Username or Password", status: false });
 
-    //Check Password
+    // Check Password
     const isPasswordValid = await bcrypt.compare(password, admin.password);
     if (!isPasswordValid)
       return res.json({ msg: "Incorrect Username or Password", status: false });
 
+    const token = jwt.sign({ name }, "secretKey", {
+      expiresIn: "7d",
+    });
+
+    await res.cookie("AccessToken", token);
+
     //Login success
-    res.json("Login Success");
+    res.json({ message: "Login Success" });
   } catch (error) {
     //Send Error Message
     res.send("Not authorized");
