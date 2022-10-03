@@ -19,10 +19,6 @@ const projectSchema = new Schema({
     type: String,
     required: true,
   },
-  ProjectMainImage: {
-    type: String,
-    required: true,
-  },
   ProjectImages: {
     type: String,
     required: true,

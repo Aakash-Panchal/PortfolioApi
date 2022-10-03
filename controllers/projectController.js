@@ -16,7 +16,6 @@ const AddProject = async (req, res) => {
       projectDescription: req.body.projectDescription,
       projectReview: req.body.projectReview,
       projectLink: req.body.projectLink,
-      ProjectMainImage: req.body.ProjectMainImage,
       ProjectImages: req.body.ProjectImages,
     });
 
