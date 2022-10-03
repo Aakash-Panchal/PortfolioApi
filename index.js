@@ -3,12 +3,19 @@ const mongoose = require("mongoose");
 const authRoutes = require("./routes/authRoutes");
 const ProjecRoutes = require("./routes/ProjectRoutes");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 require("dotenv").config();
 
 const app = express();
 
+const corsOptions = {
+  origin: true,
+  credentials: true,
+};
+
 app.use(express.json());
+app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use("/api/admin", authRoutes);
 app.use("/api/projects", ProjecRoutes);

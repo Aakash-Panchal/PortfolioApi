@@ -56,10 +56,16 @@ const login = async (req, res) => {
       expiresIn: "7d",
     });
 
-    await res.cookie("AccessToken", token);
+    console.log(token);
 
-    //Login success
-    res.json({ message: "Login Success" });
+    res
+      .cookie("AccessToken", token, {
+        httpOnly: true,
+        sameSite: "None",
+        secure: false,
+        path: "/",
+      })
+      .json({ message: "Login Success" });
   } catch (error) {
     //Send Error Message
     res.send("Not authorized");
