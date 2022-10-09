@@ -2,7 +2,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/authRoutes");
 const ProjecRoutes = require("./routes/ProjectRoutes");
-const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
 require("dotenv").config();
@@ -16,7 +15,6 @@ const corsOptions = {
 
 app.use(express.json());
 app.use(cors(corsOptions));
-app.use(cookieParser());
 app.use("/api/admin", authRoutes);
 app.use("/api/projects", ProjecRoutes);
 app.use("/images", express.static("images"));
