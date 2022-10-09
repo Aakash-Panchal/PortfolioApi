@@ -1,4 +1,6 @@
 const Projects = require("../models/projectModel");
+const cloudninary = require("../middleware/cloudinary");
+const fs = require("fs");
 
 const AddProject = async (req, res) => {
   try {
@@ -10,18 +12,34 @@ const AddProject = async (req, res) => {
     if (checkProject)
       return res.json({ Error: "Project already exist", status: false });
 
-    //Get Project Details from body
+    //Upload PRoject Images
+    const uploader = async (path) =>
+      await cloudninary.uploads(path, "Project Images");
+
+    let ProjectImages = [];
+    const files = req.files;
+
+    for (const file of files) {
+      const { path } = file;
+      const filePath = await uploader(path);
+      ProjectImages.push(filePath);
+      fs.unlinkSync(path);
+    }
+
+    // Get Project Details from body
     const projects = new Projects({
       projectTitle: req.body.projectTitle,
+      projectCategory: req.body.projectCategory,
       projectDescription: req.body.projectDescription,
+      projectStartDate: req.body.projectStartDate,
+      projectEndDate: req.body.projectEndDate,
       projectReview: req.body.projectReview,
       projectLink: req.body.projectLink,
-      ProjectImages: req.body.ProjectImages,
+      ProjectImages: ProjectImages,
     });
 
-    //Send Project Details in Database
+    // Send Project Details in Database
     await projects.save();
-
     res.status(201).send("Project Added");
   } catch (error) {
     res.status(500).send(error);
