@@ -2,17 +2,14 @@ const jwt = require("jsonwebtoken");
 
 const verifyAdmin = (req, res, next) => {
   try {
-    const token = req.cookies.AccessToken;
+    //Get token from header
+    const Token = req.headers.authorization;
 
-    console.log(token);
-
-    if (token === undefined) {
-      res.status(401).send("failed.");
-    }
-
-    jwt.verify(token, "secretKey");
+    // verify jwt token
+    jwt.verify(Token, process.env.JWT_SECRET_KEY);
     next();
   } catch (error) {
+    //Send Error
     res.status(401).send({ Error: error, Message: "Authorization Failed" });
   }
 };

@@ -32,6 +32,7 @@ const addAdmin = async (req, res) => {
 
     res.status(201).send("Admin Added");
   } catch (error) {
+    //Send Error
     res.send(error);
   }
 };
@@ -52,25 +53,15 @@ const login = async (req, res) => {
     if (!isPasswordValid)
       return res.json({ msg: "Incorrect Username or Password", status: false });
 
-    const token = jwt.sign({ name }, "secretKey", {
+    const token = jwt.sign({ name }, process.env.JWT_SECRET_KEY, {
       expiresIn: "7d",
     });
 
-    console.log(token);
-
-    res
-      .cookie("AccessToken", token, {
-        httpOnly: true,
-        sameSite: "None",
-        secure: true,
-      })
-      .json({ message: "Login Success" });
+    res.json({ message: "Login Success", token: token });
   } catch (error) {
     //Send Error Message
     res.send("Not authorized");
   }
 };
-
-const logOut = async (req, res) => {};
 
 module.exports = { addAdmin, login, logOut };
