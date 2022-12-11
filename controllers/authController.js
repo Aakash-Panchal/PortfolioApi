@@ -40,20 +40,21 @@ const addAdmin = async (req, res) => {
 const login = async (req, res) => {
   try {
     //Get Login Details
-    const { name, password } = req.body;
+    const { email, password } = req.body;
 
     //Find if Admin Exist in Database
-    const admin = await Admin.findOne({ name });
+    const admin = await Admin.findOne({ email });
 
     if (!admin)
-      return res.json({ msg: "Incorrect Username or Password", status: false });
+      return res.json({ msg: "Incorrect email or Password", status: false });
 
     // Check Password
     const isPasswordValid = await bcrypt.compare(password, admin.password);
-    if (!isPasswordValid)
-      return res.json({ msg: "Incorrect Username or Password", status: false });
 
-    const token = jwt.sign({ name }, process.env.JWT_SECRET_KEY, {
+    if (!isPasswordValid)
+      return res.json({ msg: "Incorrect email or Password", status: false });
+
+    const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
       expiresIn: "7d",
     });
 
@@ -64,4 +65,4 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { addAdmin, login, logOut };
+module.exports = { addAdmin, login };
