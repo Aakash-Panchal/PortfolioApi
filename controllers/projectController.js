@@ -42,6 +42,7 @@ const AddProject = async (req, res) => {
     await projects.save();
     res.status(201).send("Project Added");
   } catch (error) {
+    console.log(error);
     res.status(500).send(error);
   }
 };

@@ -7,6 +7,8 @@ const addAdmin = async (req, res) => {
     //Get Admin Details
     const { name, email, password } = req.body;
 
+    console.log(password);
+
     //Check If UserName Exist
     const checkUsername = await Admin.findOne({ name });
     if (checkUsername)
@@ -33,6 +35,7 @@ const addAdmin = async (req, res) => {
     res.status(201).send("Admin Added");
   } catch (error) {
     //Send Error
+    console.log(error);
     res.send(error);
   }
 };

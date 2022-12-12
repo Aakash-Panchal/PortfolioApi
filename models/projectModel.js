@@ -16,11 +16,11 @@ const projectSchema = new Schema({
     required: true,
   },
   projectStartDate: {
-    type: String,
+    type: Date,
     required: true,
   },
   projectEndDate: {
-    type: String,
+    type: Date,
     required: true,
   },
   projectReview: {

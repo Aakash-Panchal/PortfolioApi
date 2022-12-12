@@ -10,7 +10,7 @@ const verifyAdmin = (req, res, next) => {
     next();
   } catch (error) {
     //Send Error
-    res.status(401).send({ Error: error, Message: "Authorization Failed" });
+    res.status(401).send({ Message: "Authorization Failed" });
   }
 };
 
