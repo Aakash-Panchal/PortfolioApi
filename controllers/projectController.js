@@ -6,6 +6,7 @@ const AddProject = async (req, res) => {
   try {
     //Get Project Title from body
     const { projectTitle } = req.body;
+    var url = req.body.url;
 
     //Check if project already exist
     const checkProject = await Projects.findOne({ projectTitle });
@@ -26,6 +27,10 @@ const AddProject = async (req, res) => {
       fs.unlinkSync(path);
     }
 
+    if (url) {
+      url = url.replace(/ /g, "_");
+    }
+
     // Get Project Details from body
     const projects = new Projects({
       projectTitle: req.body.projectTitle,
@@ -36,6 +41,7 @@ const AddProject = async (req, res) => {
       projectReview: req.body.projectReview,
       projectLink: req.body.projectLink,
       ProjectImages: ProjectImages,
+      url: url,
     });
 
     // Send Project Details in Database
@@ -60,9 +66,10 @@ const GetAllProjects = async (req, res) => {
 const GetSingleProjects = async (req, res) => {
   try {
     //Get Single project from database
-    const id = req.params.id;
-    const singleProject = await Projects.findById(id);
+    const url = req.params.url;
+    const singleProject = await Projects.find({ url: url });
 
+    console.log(singleProject);
     res.status(200).send(singleProject);
   } catch (error) {
     res.send(error);
@@ -87,7 +94,7 @@ const DeleteProject = async (req, res) => {
     const id = req.params.id;
     const project = await Projects.findByIdAndDelete(id);
 
-    res.send(`${project.projectTitle} has been deleted.`);
+    res.send(`Project ${project.projectTitle} has been deleted.`);
   } catch (error) {
     res.send(error);
   }

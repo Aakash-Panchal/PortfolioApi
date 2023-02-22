@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.post("/", upload.array("ProjectImages"), verifyAdmin, AddProject);
 router.get("/", GetAllProjects);
-router.get("/:id", GetSingleProjects);
+router.get("/:url", GetSingleProjects);
 router.patch("/:id", verifyAdmin, EditProject);
 router.delete("/:id", verifyAdmin, DeleteProject);
 

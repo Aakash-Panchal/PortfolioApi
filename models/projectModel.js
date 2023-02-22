@@ -31,8 +31,12 @@ const projectSchema = new Schema({
     required: true,
   },
   ProjectImages: {
-    type: [Object],
     required: true,
+    type: [Object],
+  },
+  url: {
+    required: true,
+    type: String,
   },
 });
 
