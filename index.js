@@ -15,10 +15,11 @@ const corsOptions = {
 };
 
 app.use(express.json());
+app.use(express.urlencoded());
 app.use(cors(corsOptions));
 app.use("/api/admin", authRoutes);
 app.use("/api/projects", ProjecRoutes);
-app.use("/api/sendemail", EmailRoutes)
+app.use("/api/sendemail", EmailRoutes);
 app.use("/images", express.static("images"));
 
 app.listen(`${process.env.PORT}`, () => {

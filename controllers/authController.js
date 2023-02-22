@@ -7,7 +7,12 @@ const addAdmin = async (req, res) => {
     //Get Admin Details
     const { name, email, password } = req.body;
 
-    console.log(password);
+    console.log(name);
+
+    if (!name) return res.json({ Error: "Username Required", status: false });
+    if (!email) return res.json({ Error: "Email Required", status: false });
+    if (!password)
+      return res.json({ Error: "Password Required", status: false });
 
     //Check If UserName Exist
     const checkUsername = await Admin.findOne({ name });
@@ -19,7 +24,6 @@ const addAdmin = async (req, res) => {
     if (checkEmail)
       return res.json({ Error: "Email already used", status: false });
 
-    //Hash Password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     //Create Model
@@ -32,7 +36,7 @@ const addAdmin = async (req, res) => {
     //Send Data in DataBase
     await admin.save();
 
-    res.status(201).send("Admin Added");
+    res.status(201).json("Admin Added");
   } catch (error) {
     //Send Error
     console.log(error);
@@ -68,4 +72,14 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { addAdmin, login };
+const getAdmin = async (req, res) => {
+  try {
+    //Get all projects from database
+    const project = await Admin.find();
+    res.status(200).send(project);
+  } catch (error) {
+    res.send(error);
+  }
+};
+
+module.exports = { addAdmin, login, getAdmin };
