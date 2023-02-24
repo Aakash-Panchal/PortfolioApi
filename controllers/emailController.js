@@ -22,30 +22,32 @@ transporter.use("compile", hbs(handlebarOptions));
 
 const sendEmail = async (req, res) => {
   try {
+    const { name, email, work, my_info, message } = req.body.inputs;
+
     const mailOptions = {
-      from: req.body.email,
+      from: email,
       to: process.env.Email,
-      subject: `You have a new email from ${req.body.name}`,
-      text: req.body.message,
+      subject: `You have a new email from ${name}`,
+      text: message,
       template: "email",
       context: {
-        name: req.body.name,
-        email: req.body.email,
-        work: req.body.work,
-        my_info: req.body.my_info,
-        message: req.body.message,
+        name: name,
+        email: email,
+        work: work,
+        my_info: my_info,
+        message: message,
       },
     };
 
     const ResMailOptions = {
-      from: req.body.email,
-      to: req.body.email,
+      from: email,
+      to: email,
       subject: `Thank you for contacting Aakash`,
-      text: req.body.message,
+      text: message,
       template: "thankyou",
       context: {
-        name: req.body.name,
-        messgae: req.body.message,
+        name: name,
+        messgae: message,
       },
     };
 
