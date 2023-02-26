@@ -11,7 +11,22 @@ const {
 
 const router = express.Router();
 
-router.post("/", upload.array("ProjectImages"), verifyAdmin, AddProject);
+router.post(
+  "/",
+  verifyAdmin,
+  upload.fields([
+    {
+      name: "thumbnail",
+      maxCount: 1,
+    },
+    {
+      name: "ProjectImages",
+      maxCount: 5,
+    },
+  ]),
+
+  AddProject
+);
 router.get("/", GetAllProjects);
 router.get("/:url", GetSingleProjects);
 router.patch("/:id", verifyAdmin, EditProject);

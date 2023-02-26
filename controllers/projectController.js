@@ -5,28 +5,32 @@ const fs = require("fs");
 const AddProject = async (req, res) => {
   try {
     //Get Project Title from body
-    const { projectTitle } = req.body;
-    var url = req.body.url;
+    var { projectTitle, url } = req.body;
 
     //Check if project already exist
     const checkProject = await Projects.findOne({ projectTitle });
     if (checkProject)
       return res.json({ Error: "Project already exist", status: false });
 
-    //Upload PRoject Images
+    //Upload Project Images
     const uploader = async (path) =>
       await cloudninary.uploads(path, "Project Images");
 
     let ProjectImages = [];
-    const files = req.files;
 
-    for (const file of files) {
+    const { path } = req.files.thumbnail[0];
+    const projectThumbnail = await uploader(path);
+    const images = req.files.ProjectImages;
+    fs.unlinkSync(path);
+
+    for (const file of images) {
       const { path } = file;
       const filePath = await uploader(path);
       ProjectImages.push(filePath);
       fs.unlinkSync(path);
     }
 
+    // Replace space from with _ in url
     if (url) {
       url = url.replace(/ /g, "_");
     }
@@ -41,6 +45,7 @@ const AddProject = async (req, res) => {
       projectReview: req.body.projectReview,
       projectLink: req.body.projectLink,
       ProjectImages: ProjectImages,
+      ProjectThumbnail: projectThumbnail.url,
       url: url,
     });
 
