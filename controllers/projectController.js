@@ -83,9 +83,8 @@ const GetSingleProjects = async (req, res) => {
   try {
     //Get Single project from database
     const url = req.params.url;
-    const singleProject = await Projects.find({ url: url });
+    const singleProject = await Projects.findOne({ url: url });
 
-    console.log(singleProject);
     res.status(200).send(singleProject);
   } catch (error) {
     res.send(error);
