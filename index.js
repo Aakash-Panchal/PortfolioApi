@@ -4,13 +4,13 @@ const authRoutes = require("./routes/authRoutes");
 const ProjecRoutes = require("./routes/ProjectRoutes");
 const EmailRoutes = require("./routes/EmailRoute");
 const cors = require("cors");
-
 require("dotenv").config();
 
 const app = express();
 
 const corsOptions = {
-  origin: true,
+  origin: ["https://www.aakashpanchal.com", "http://localhost:3000"],
+  methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
   credentials: true,
 };
 
