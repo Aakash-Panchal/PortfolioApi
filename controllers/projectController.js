@@ -5,18 +5,29 @@ const fs = require("fs");
 const AddProject = async (req, res) => {
   try {
     //Get Project Title from body
-    var { projectTitle, url } = req.body;
+    var {
+      projectTitle,
+      projectCategory,
+      projectDescription,
+      projectStartDate,
+      projectEndDate,
+      projectReview,
+      projectLink,
+      url,
+    } = req.body;
 
     //Check if project already exist
     const checkProject = await Projects.findOne({ projectTitle });
     if (checkProject)
-      return res.json({ Error: "Project already exist", status: false });
+      return res
+        .status(409)
+        .json({ Error: "Project already exist", status: false });
+
+    let ProjectImages = [];
 
     //Upload Project Images
     const uploader = async (path) =>
       await cloudninary.uploads(path, "Project Images");
-
-    let ProjectImages = [];
 
     const { path } = req.files.thumbnail[0];
     const projectThumbnail = await uploader(path);
@@ -37,13 +48,13 @@ const AddProject = async (req, res) => {
 
     // Get Project Details from body
     const projects = new Projects({
-      projectTitle: req.body.projectTitle,
-      projectCategory: req.body.projectCategory,
-      projectDescription: req.body.projectDescription,
-      projectStartDate: req.body.projectStartDate,
-      projectEndDate: req.body.projectEndDate,
-      projectReview: req.body.projectReview,
-      projectLink: req.body.projectLink,
+      projectTitle: projectTitle,
+      projectCategory: projectCategory,
+      projectDescription: projectDescription,
+      projectStartDate: projectStartDate,
+      projectEndDate: projectEndDate,
+      projectReview: projectReview,
+      projectLink: projectLink,
       ProjectImages: ProjectImages,
       ProjectThumbnail: projectThumbnail.url,
       url: url,

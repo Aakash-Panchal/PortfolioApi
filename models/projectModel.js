@@ -31,12 +31,12 @@ const projectSchema = new Schema({
     required: true,
   },
   ProjectImages: {
-    required: true,
     type: [Object],
+    required: true,
   },
   ProjectThumbnail: {
+    type: String,
     required: true,
-    type: [Object],
   },
   url: {
     required: true,
