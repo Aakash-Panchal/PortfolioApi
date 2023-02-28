@@ -21,10 +21,6 @@ app.use("/api/projects", ProjecRoutes);
 app.use("/api/sendemail", EmailRoutes);
 app.use("/images", express.static("images"));
 
-app.listen(`${process.env.PORT}`, () => {
-  console.log(`Server Started at ${process.env.PORT}`);
-});
-
 const database = mongoose.connection;
 
 mongoose.connect(process.env.DATABASE_URL, {
@@ -38,4 +34,8 @@ database.on("error", (error) => {
 
 database.once("connected", () => {
   console.log("Connected to Database");
+});
+
+app.listen(`${process.env.PORT}`, () => {
+  console.log(`Server Started at ${process.env.PORT}`);
 });
