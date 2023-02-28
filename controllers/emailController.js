@@ -52,18 +52,13 @@ const sendEmail = async (req, res) => {
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        return console.log(error);
-      }
+      if (info) {
+        res.send({ Message: "Email sent" });
+        transporter.sendMail(ResMailOptions, function (error, info) {
+          if (info) return res.send({ Message: "Email sent" });
+        });
+      } else return res.send({ Message: error });
     });
-
-    transporter.sendMail(ResMailOptions, function (error, info) {
-      if (error) {
-        return console.log(error);
-      }
-    });
-
-    res.send({ Message: "Email sent" });
   } catch (error) {
     console.log(error);
     res.send({ Error: error });
