@@ -1,5 +1,5 @@
 const multer = require("multer");
-import path from "path";
+const path = require("path");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
