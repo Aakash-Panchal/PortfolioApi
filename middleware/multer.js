@@ -3,9 +3,9 @@ const multer = require("multer");
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     if (file.fieldname === "thumbnail") {
-      cb(null, "images");
+      cb(null, "./images");
     } else {
-      cb(null, "images");
+      cb(null, "./images");
     }
   },
   filename: (req, file, cb) => {
