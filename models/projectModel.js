@@ -35,7 +35,7 @@ const projectSchema = new Schema({
     required: true,
   },
   ProjectThumbnail: {
-    type: String,
+    type: [Object],
     required: true,
   },
   url: {

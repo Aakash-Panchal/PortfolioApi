@@ -1,6 +1,5 @@
 const Projects = require("../models/projectModel");
 const cloudninary = require("../middleware/cloudinary");
-const fs = require("fs");
 
 const AddProject = async (req, res) => {
   try {
@@ -28,17 +27,15 @@ const AddProject = async (req, res) => {
       await cloudninary.uploads(path, "Project Images");
 
     let ProjectImages = [];
-    const { path } = req.files.thumbnail[0];
-    const projectThumbnail = await uploader(path);
+    const { path, filename } = req.files.thumbnail[0];
+    const projectThumbnailurl = await uploader(path);
+    const projectThumbnail = { url: projectThumbnailurl.url, img: filename };
     const images = req.files.ProjectImages;
-    fs.unlinkSync(path);
 
     for (const file of images) {
-      const { path } = file;
+      const { filename } = file;
       const filePath = await uploader(path);
-      ProjectImages.push(filePath);
-      fs.unlinkSync(path);
-      ProjectImages.push(path);
+      ProjectImages.push({ url: filePath.url, img: filename });
     }
 
     // Replace space from with _ in url
@@ -56,12 +53,14 @@ const AddProject = async (req, res) => {
       projectReview: projectReview,
       projectLink: projectLink,
       ProjectImages: ProjectImages,
-      ProjectThumbnail: projectThumbnail.url,
+      ProjectThumbnail: projectThumbnail,
       url: url,
     });
 
+    console.log(projects);
+
     // Send Project Details in Database
-    await projects.save();
+    // await projects.save();
     res.status(201).send("Project Added");
   } catch (error) {
     console.log(error);
